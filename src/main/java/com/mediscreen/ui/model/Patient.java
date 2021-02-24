@@ -1,7 +1,7 @@
 package com.mediscreen.ui.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -19,7 +19,7 @@ public class Patient {
     @NotBlank(message = "Lastname is mandatory")
     private String lastname;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Birth Date is mandatory")
     private LocalDate birthDate;
 
@@ -29,7 +29,7 @@ public class Patient {
     @NotBlank(message = "Phone is mandatory")
     private String phone;
 
-    @NotBlank
-    @Size(min = 1, max = 1, message = "Please type F or M for patient's sex")
+    @NotBlank(message = "Sex is mandatory")
+    @Size(min = 1, max = 1, message = "Sex must be 1 char long")
     private String sex;
 }
