@@ -17,5 +17,5 @@ public interface PatientsProxy {
     List<Patient> getAllPatients();
 
     @PostMapping(value="/patient/add")
-    Patient addPatient(@RequestParam String family, @RequestParam  String given, @RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd") LocalDate birthdate, @RequestParam String sex, @RequestParam String address, @RequestParam String phone);
+    Patient addPatient(@RequestParam String family, @RequestParam  String given, @RequestParam @DateTimeFormat(pattern ="yyyy-MM-dd") LocalDate dob, @RequestParam String sex, @RequestParam String address, @RequestParam String phone);
 }

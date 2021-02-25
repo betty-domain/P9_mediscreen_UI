@@ -22,25 +22,28 @@ public class PatientController {
     public String list(Model model) {
         List<Patient> patientList = patientsProxyService.getAllPatients();
 
-        model.addAttribute("patientsList",patientList);
+        model.addAttribute("patientsList", patientList);
         return "patient/list";
     }
 
     @GetMapping("/patient/add")
-    public String addPatientForm(Patient patient)
-    {
+    public String addPatientForm(Patient patient) {
         return "patient/add";
     }
 
     @RequestMapping("/patient/validate")
-    public String validate(@Valid Patient patient, BindingResult result, Model model)
-    {
-        if (result.hasErrors()){
+    public String validate(@Valid Patient patient, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             return "patient/add";
         }
 
-        patientsProxyService.addPatient(patient.getLastname(), patient.getFirstname(), patient.getBirthDate(), patient.getSex(), patient.getAddress(), patient.getPhone());
-        model.addAttribute("patientsList",patientsProxyService.getAllPatients());
-        return "redirect:/patient/list";
+        try {
+            patientsProxyService.addPatient(patient.getLastname(), patient.getFirstname(), patient.getBirthDate(), patient.getSex(), patient.getAddress(), patient.getPhone());
+            model.addAttribute("patientsList", patientsProxyService.getAllPatients());
+            return "redirect:/patient/list";
+        } catch (Exception exception) {
+            model.addAttribute("errorAddingPatient", exception.getMessage());
+            return "patient/add";
+        }
     }
 }
