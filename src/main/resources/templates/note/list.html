@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Notes List</title>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <a href="/patient/list">Patients List</a>&nbsp;
+        </div>
+    </div>
+    <div class="row"><h2>Note's List for Patient <label th:text="${patient.firstname}"></label>&nbsp;<label th:text="${patient.lastname}"></label></h2></div>
+
+    <div class="row">
+        <a th:href="@{/note/{patientId}/add(patientId=${patient.id})}" class="btn btn-primary btn-sm">Add Note</a>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Note</th>
+                <th>Created Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="note : ${notesList}">
+                <td th:text="${note.note}"></td>
+                <td th:text="${note.createdDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
