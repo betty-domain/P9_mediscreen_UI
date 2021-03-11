@@ -15,6 +15,8 @@
     </div>
     <div class="row"><h2>Patient List</h2></div>
 
+    <p class="text-danger" th:if="${!#strings.isEmpty(errorPatientNotFoundMessage)}" th:text="${errorPatientNotFoundMessage}"></p>
+
     <div class="row">
         <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>
         <table class="table table-bordered">
@@ -38,6 +40,7 @@
                 <td th:text="${patient.address}"></td>
                 <td th:text="${patient.phone}"></td>
                 <td style="width: 15%" class="text-center">
+                    <a th:href="@{/note/{patientId}/add(patientId=${patient.id})}">Add Note</a>|
                     <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a>
             </tr>
             </tbody>
