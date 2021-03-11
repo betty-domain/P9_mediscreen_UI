@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-12">
-                    <a class="btn btn-danger btn-sm" href="/patient/list">Cancel</a>
+                    <a class="btn btn-danger btn-sm" th:href="@{/note/{patientId}/list(patientId=${patient.id})}">Cancel</a>
                     <input class="btn btn-primary btn-sm" type="submit" value="Add Note">
                 </div>
             </div>

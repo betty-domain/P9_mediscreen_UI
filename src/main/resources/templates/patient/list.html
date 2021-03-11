@@ -9,12 +9,8 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-6">
-            <a href="/patient/list">Patient List</a>&nbsp;|&nbsp;
-        </div>
-    </div>
-    <div class="row"><h2>Patient List</h2></div>
 
+    </div>
     <p class="text-danger" th:if="${!#strings.isEmpty(errorPatientNotFoundMessage)}" th:text="${errorPatientNotFoundMessage}"></p>
 
     <div class="row">
@@ -40,7 +36,7 @@
                 <td th:text="${patient.address}"></td>
                 <td th:text="${patient.phone}"></td>
                 <td style="width: 15%" class="text-center">
-                    <a th:href="@{/note/{patientId}/add(patientId=${patient.id})}">Add Note</a>|
+                    <a th:href="@{/note/{patientId}/list(patientId=${patient.id})}">Notes</a>|
                     <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a>
             </tr>
             </tbody>
