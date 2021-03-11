@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class NoteController {
@@ -54,11 +55,28 @@ public class NoteController {
             noteProxyService.addNote(note.getPatientId(), note.getNote());
             model.addAttribute("patient", patientsProxyService.getPatient(note.getPatientId()));
 
-            return "redirect:/patient/list";
+            return "redirect:/note/"+patientId+"/list";
         } catch (Exception exception) {
             model.addAttribute("errorAddingNote", exception.getMessage());
             return "note/add";
         }
 
+    }
+
+    @GetMapping("note/{patientId}/list")
+    public String listNoteForm(@PathVariable("patientId") Integer patientId, Model model)
+    {
+        try {
+            Patient patient = patientsProxyService.getPatient(patientId);
+            model.addAttribute("patient", patient);
+
+            List<Note> noteList = noteProxyService.getNotesForPatient(patientId);
+            model.addAttribute("notesList", noteList);
+            return "note/list";
+        } catch (PatientNotFoundException patientNotFoundException) {
+            model.addAttribute("errorPatientNotFoundMessage", patientNotFoundException.getMessage());
+            //TODO : voir avec Alexandre si on peut appeler un autre controller pour déléguer la gestion de l'affichage de la liste au controller qui en est responsable
+            return patientController.list(model);
+        }
     }
 }
