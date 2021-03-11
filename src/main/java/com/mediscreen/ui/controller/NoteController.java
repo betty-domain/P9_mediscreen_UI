@@ -51,7 +51,7 @@ public class NoteController {
             return "note/add";
         }
         try {
-            noteProxyService.addNote(note);
+            noteProxyService.addNote(note.getPatientId(), note.getNote());
             model.addAttribute("patient", patientsProxyService.getPatient(note.getPatientId()));
 
             return "redirect:/patient/list";
