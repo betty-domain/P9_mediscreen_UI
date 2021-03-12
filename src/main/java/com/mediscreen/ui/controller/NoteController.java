@@ -1,6 +1,6 @@
 package com.mediscreen.ui.controller;
 
-import com.mediscreen.ui.exceptions.PatientNotFoundException;
+import com.mediscreen.ui.exceptions.ObjectNotFoundException;
 import com.mediscreen.ui.model.Note;
 import com.mediscreen.ui.model.Patient;
 import com.mediscreen.ui.proxies.NoteProxy;
@@ -35,9 +35,8 @@ public class NoteController {
             Patient patient = patientsProxyService.getPatient(patientId);
             model.addAttribute("patient", patient);
             return "note/add";
-        } catch (PatientNotFoundException patientNotFoundException) {
-            model.addAttribute("errorPatientNotFoundMessage", patientNotFoundException.getMessage());
-            //TODO : voir avec Alexandre si on peut appeler un autre controller pour déléguer la gestion de l'affichage de la liste au controller qui en est responsable
+        } catch (ObjectNotFoundException objectNotFoundException) {
+            model.addAttribute("errorPatientNotFoundMessage", objectNotFoundException.getMessage());
             return patientController.list(model);
         }
     }
@@ -55,7 +54,7 @@ public class NoteController {
             noteProxyService.addNote(note.getPatientId(), note.getNote());
             model.addAttribute("patient", patientsProxyService.getPatient(note.getPatientId()));
 
-            return "redirect:/note/"+patientId+"/list";
+            return "redirect:/note/" + patientId + "/list";
         } catch (Exception exception) {
             model.addAttribute("errorAddingNote", exception.getMessage());
             return "note/add";
@@ -63,9 +62,8 @@ public class NoteController {
 
     }
 
-    @GetMapping("note/{patientId}/list")
-    public String listNoteForm(@PathVariable("patientId") Integer patientId, Model model)
-    {
+    @GetMapping("/note/{patientId}/list")
+    public String listNoteForm(@PathVariable("patientId") Integer patientId, Model model) {
         try {
             Patient patient = patientsProxyService.getPatient(patientId);
             model.addAttribute("patient", patient);
@@ -73,10 +71,51 @@ public class NoteController {
             List<Note> noteList = noteProxyService.getNotesForPatient(patientId);
             model.addAttribute("notesList", noteList);
             return "note/list";
-        } catch (PatientNotFoundException patientNotFoundException) {
-            model.addAttribute("errorPatientNotFoundMessage", patientNotFoundException.getMessage());
-            //TODO : voir avec Alexandre si on peut appeler un autre controller pour déléguer la gestion de l'affichage de la liste au controller qui en est responsable
+        } catch (ObjectNotFoundException objectNotFoundException) {
+            model.addAttribute("errorPatientNotFoundMessage", objectNotFoundException.getMessage());
+
             return patientController.list(model);
         }
     }
+
+    @GetMapping("/note/{patientId}/update/{id}")
+    public String updateNoteForm(@PathVariable("patientId") Integer patientId, @PathVariable("id") String id, Model model) {
+        try {
+            Note note = noteProxyService.getNote(id);
+            model.addAttribute("note", note);
+        } catch (ObjectNotFoundException noteNotFoundException) {
+            model.addAttribute("errorNoteNotFoundMessage", noteNotFoundException.getMessage());
+            return this.listNoteForm(patientId, model);
+        }
+
+        try {
+            Patient patient = patientsProxyService.getPatient(patientId);
+            model.addAttribute("patient", patient);
+            return "note/update";
+        } catch (ObjectNotFoundException patientNotFoundException) {
+            model.addAttribute("errorPatientNotFoundMessage", patientNotFoundException.getMessage());
+            return patientController.list(model);
+        }
+
+    }
+
+    @PostMapping("/note/{patientId}/update/{id}")
+    public String updateNote(@PathVariable("patientId") Integer patientId, @PathVariable("id") String id, @Valid Note note, BindingResult result, Model model) {
+        Patient patient = patientsProxyService.getPatient(patientId);
+        note.setPatientId(patientId);
+
+        if (result.hasErrors()) {
+            model.addAttribute("patient", patient);
+            return "note/update";
+        }
+        try {
+            noteProxyService.updateNote(id, patientId, note.getNote());
+            model.addAttribute("notesList", noteProxyService.getNotesForPatient(patientId));
+            return "redirect:/note/" + patientId + "/list";
+        } catch (Exception exception) {
+            model.addAttribute("errorUpdatingNote", exception.getMessage());
+            return "note/update";
+        }
+    }
+
 }
