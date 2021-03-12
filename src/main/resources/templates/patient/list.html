@@ -14,6 +14,7 @@
         </div>
     </div>
     <div class="row"><h2>Patient List</h2></div>
+    <p class="text-danger" th:if="${!#strings.isEmpty(errorPatientNotFoundMessage)}" th:text="${errorPatientNotFoundMessage}"></p>
 
     <div class="row">
         <a href="/patient/add" class="btn btn-primary btn-sm">Add Patient</a>

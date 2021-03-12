@@ -60,8 +60,7 @@ public class PatientController {
         catch (PatientNotFoundException patientNotFoundException)
         {
             model.addAttribute("errorPatientNotFoundMessage",patientNotFoundException.getMessage());
-            model.addAttribute("patient", new Patient());
-            return "patient/update";
+            return this.list(model);
         }
     }
 
