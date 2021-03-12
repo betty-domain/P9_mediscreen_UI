@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>Patient List</title>
-    <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body>
 <div class="container">
@@ -38,6 +38,7 @@
                 <td style="width: 15%" class="text-center">
                     <a th:href="@{/note/{patientId}/list(patientId=${patient.id})}">Notes</a>|
                     <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a>
+                </td>
             </tr>
             </tbody>
         </table>
