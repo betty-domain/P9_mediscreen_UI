@@ -4,16 +4,13 @@
 <head>
     <meta charset="utf-8"/>
     <title>Patient List</title>
-    <link rel="stylesheet" href="../../css/bootstrap.min.css" >
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-6">
-            <a href="/patient/list">Patient List</a>&nbsp;|&nbsp;
-        </div>
+
     </div>
-    <div class="row"><h2>Patient List</h2></div>
     <p class="text-danger" th:if="${!#strings.isEmpty(errorPatientNotFoundMessage)}" th:text="${errorPatientNotFoundMessage}"></p>
 
     <div class="row">
@@ -39,7 +36,9 @@
                 <td th:text="${patient.address}"></td>
                 <td th:text="${patient.phone}"></td>
                 <td style="width: 15%" class="text-center">
+                    <a th:href="@{/note/{patientId}/list(patientId=${patient.id})}">Notes</a>|
                     <a th:href="@{/patient/update/{id}(id=${patient.id})}">Edit</a>
+                </td>
             </tr>
             </tbody>
         </table>
