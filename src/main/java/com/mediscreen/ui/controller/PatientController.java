@@ -1,6 +1,6 @@
 package com.mediscreen.ui.controller;
 
-import com.mediscreen.ui.exceptions.PatientNotFoundException;
+import com.mediscreen.ui.exceptions.ObjectNotFoundException;
 import com.mediscreen.ui.model.Patient;
 import com.mediscreen.ui.proxies.PatientsProxy;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,10 +57,11 @@ public class PatientController {
             model.addAttribute("patient", patient);
             return "patient/update";
         }
-        catch (PatientNotFoundException patientNotFoundException)
+        catch (ObjectNotFoundException patientNotFoundException)
         {
-            model.addAttribute("errorPatientNotFoundMessage",patientNotFoundException.getMessage());
-            return this.list(model);
+            model.addAttribute("errorPatientNotFoundMessage", patientNotFoundException.getMessage());
+            model.addAttribute("patient", new Patient());
+            return "patient/update";
         }
     }
 

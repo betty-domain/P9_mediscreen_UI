@@ -25,10 +25,11 @@ public class FeignErrorDecoder implements ErrorDecoder {
 
         switch (response.status()) {
             case 400: {
-                return new PatientBadRequestException(originalException.map(ExceptionMessage::getMessage).orElse("Patient Bad Request"));
+
+                return new BadRequestException(originalException.map(ExceptionMessage::getMessage).orElse("Patient Bad Request"));
             }
             case 404: {
-                return new PatientNotFoundException(originalException.map(ExceptionMessage::getMessage).orElse("Patient not Found"));
+                return new ObjectNotFoundException(originalException.map(ExceptionMessage::getMessage).orElse("Patient not Found"));
             }
             default:
                 return defaultErrorDecoder.decode(str, response);
