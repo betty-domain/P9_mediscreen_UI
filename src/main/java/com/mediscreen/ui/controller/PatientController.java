@@ -3,6 +3,7 @@ package com.mediscreen.ui.controller;
 import com.mediscreen.ui.exceptions.ObjectNotFoundException;
 import com.mediscreen.ui.model.Patient;
 import com.mediscreen.ui.proxies.PatientsProxy;
+import com.mediscreen.ui.proxies.RiskProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,9 @@ public class PatientController {
 
     @Autowired
     private PatientsProxy patientsProxyService;
+
+    @Autowired
+    private RiskProxy riskProxyService;
 
     @RequestMapping("/patient/list")
     public String list(Model model) {
@@ -55,6 +59,10 @@ public class PatientController {
         try {
             Patient patient = patientsProxyService.getPatient(id);
             model.addAttribute("patient", patient);
+
+            String risk = riskProxyService.getRiskForPatient(patient.getId());
+            model.addAttribute("risk",risk);
+
             return "patient/update";
         }
         catch (ObjectNotFoundException patientNotFoundException)
